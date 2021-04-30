@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 import mysql.connector
 from tkinter import messagebox
+from tkinter import ttk
 
 
 def notfilld():
@@ -15,7 +16,54 @@ def adminlogin():
     print("admin login")
 
 
+def View(tree):
+
+    db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")
+    cursor = db.cursor()
+    cursor = con1.cursor()
+    cursor.execute("SELECT * FROM train")
+    rows = cur1.fetchall()
+    for row in rows:
+        print(row)
+        tree.insert("", tk.END, values=row)
+    db.close()
+
+
 def trnaval(): # Train Available
+    db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")
+    cursor = db.cursor()
+
+
+    trnavalwin = tk.Tk()
+    tree = ttk.Treeview(trnavalwin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show='headings')
+    tree.column("c1", width=90,anchor=tk.CENTER)
+    tree.heading("c1", text="Train_name")
+
+    tree.column("c2", width=90,anchor=tk.CENTER)
+    tree.heading("c2", text="Train_no")
+
+    tree.column("c3", width=90,anchor=tk.CENTER)
+    tree.heading("c3", text="From")
+
+    tree.column("c4",width=90, anchor=tk.CENTER)
+    tree.heading("c4", text="To")
+
+    tree.column("c5",width=90, anchor=tk.CENTER)
+    tree.heading("c5", text="Date")
+
+    tree.column("c6",width=90, anchor=t.CENTER)
+    tree.heading("c6", text="Time")
+
+    tree.column("c7",width=90, anchor=tk.CENTER)
+    tree.heading("c7", text="Pantry")
+    
+    tree.pack()
+    View(tree)
+
+
+    db.commit()
+    db.close()
+
     print("Train Available")
 
 
