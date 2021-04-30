@@ -1,5 +1,8 @@
 p = " "
 q = ""
+e = "sdfkjhsd1"
+j = "321sdf"
 
-print(int(q))
-print(str(p),str(q))
+arr= [" i","i","sdfkjhsd1","321sdf"]
+mi = min(arr)
+print(mi)

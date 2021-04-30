@@ -4,6 +4,8 @@ import mysql.connector
 from tkinter import messagebox
 
 
+def notfilld():
+    messagebox.showwarning("Train Ticket Reservation","Please Fill All The Fields !!!")
 
 def tcktbookdmsg():
     messagebox.showinfo("Train Ticket Reservation","Ticket Booked")
@@ -19,22 +21,24 @@ def trnaval(): # Train Available
 
 def bktktf(arrval): # Book Ticket Function For Database
     db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")
-    if db:
-        print("Connected")
-        cursor = db.cursor()
-    else:
-        print("Nc")
-
+    cursor = db.cursor()
     arr = [str(x.get()) for x in arrval]
+    mi = min(arr)
 
-    cursor.execute("""INSERT INTO passengers(Name,Age,Gender,Phone_no,Train_name,Class,From_,To_,Date_,Time_) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr);
+    if ((mi!="") and (mi!=" ")):
 
-    print(arrval)
-    for x in arrval:
-        x.delete(0,END)
-    print("ticket booked")
-    db.commit()
-    db.close()
+        cursor.execute("""INSERT INTO passengers(Name,Age,Gender,Phone_no,Train_name,Class,From_,To_,Date_,Time_) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr);
+
+        print(arrval)
+        for x in arrval:
+            x.delete(0,END)
+        tcktbookdmsg()
+        print("ticket booked")
+        db.commit()
+        db.close()
+    else:
+        notfilld()
+        print("ticket not booked")
 
 
 def tcktres(): # Ticket Reservation
@@ -84,7 +88,7 @@ def tcktres(): # Ticket Reservation
     arr = [name,age,gender,phn_no,trn_nme,cls_,frm,to_,date,time_]
 
 
-    submitbtn = tk.Button(scndwin,text="Book Ticket", command=lambda:[bktktf(arr),tcktbookdmsg()])
+    submitbtn = tk.Button(scndwin,text="Book Ticket", command=lambda:[bktktf(arr)])#,tcktbookdmsg()
     submitbtn.grid(row=10,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
 
 
