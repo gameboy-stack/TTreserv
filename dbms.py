@@ -23,7 +23,6 @@ def View(tree):
     cursor.execute("""SELECT * FROM train""")
     rows = cursor.fetchall()
     for row in rows:
-        print(row)
         tree.insert("", tk.END, values=row)
     db.close()
 
@@ -35,6 +34,7 @@ def trnaval(): # Train Available
 
     trnavalwin = tk.Tk()
     trnavalwin.resizable(False,False)
+    trnavalwin.title("Train Ticket Reservation")
     
     tree = ttk.Treeview(trnavalwin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show='headings')
     tree.column("c1", width=110,anchor='c')
