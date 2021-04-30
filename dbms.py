@@ -93,6 +93,7 @@ def bktktf(arrval): # Book Ticket Function For Database
 def tcktres(): # Ticket Reservation
     scndwin = tk.Tk()
     scndwin.resizable(False,False)
+    scndwin.title("Train Ticket Reservation")
 
     Namel = Label(scndwin,text="Name :").grid(row = 0,column=0,padx=5,pady=5)
     name = Entry(scndwin,width=37)
