@@ -29,8 +29,6 @@ def bktktf(arrval): # Book Ticket Function For Database
 
     cursor.execute("""INSERT INTO passengers(Name,Age,Gender,Phone_no,Train_name,Class,From_,To_,Date_,Time_) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr);
 
-
-
     print(arrval)
     for x in arrval:
         x.delete(0,END)
