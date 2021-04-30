@@ -107,14 +107,10 @@ def tckt(): # Train Ticket Button Window
     trnavalbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
     tcktresbtn.place(relx=0.5, rely=0.7, anchor=S)
 
-db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="world")
-if db:
-    print("Connected")
-    cursor = db.cursor()
-else:
-    print("Nc")
+db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")
+
 db.commit()
-db.close()
+
 root = tk.Tk()
 root.resizable(False, False)
 
@@ -130,6 +126,6 @@ tktresbtn.grid(row=1,column=2)
 adminbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
 tktresbtn.place(relx=0.5, rely=0.7, anchor=S)
 
-
+db.close()
 
 mainloop()
