@@ -1,29 +1,41 @@
-Train :- (Prob Statement) 
-	Train has many Stations
-	Station has many Platforms 
-	platforms has many trains
-	platforms has many passangers
-	train has many TTE  (vice versa)
-	train has many TC (vice versa)
-	Train has many passangers
-	TTE and TC have to check ticket from passangers in respc coaches
+Train :- (Prob Statement)
+
+	train has many passengers (m to 1) train no
+
+	station stops at many train (m to m) table station no, train no, 
+
+ 	train travels through many stations (m - m)
+ 
+	platform  ( passengers wait for ) the train (1 to m )
+	
+passenger to train no name to station platform no 	
+
+admin
+train
+passengers
+station
+
+platform - station
+route
+city
+
+update
+
 
 ###################################################################################
 	
 Tables : - 
 	Admin details 
 	Train (both)
-	Station - (both)
-	TTE - (a)
-	TC - (a)
-	Platforms - (a)
-	Coaches - (a)
 	Passangers - (Tic bkng)
+	Station - (both)
+	Platforms - (a)
+	Stops at
 	
 #######################################################
 
 Admin:
-	about train, tte, tc
+	about train, 
 passangers:
 	about train 
 
@@ -41,40 +53,38 @@ passanger:
 	age
 	Train name 
 	Phone_no
-station:
-	station Name
-	Platforms
-	Platform Level
-	Station Code
-	Tracks
-	
+	train_no (new ) - (train )
+
 Train :- 
 	From 
 	to
 	Date
 	Time
-	Train No
-	Pantry
+	Train No  ( station )
 	Train_Name
+	platform no ( platform ) 
 
 
-Coaches:-
-	Serial No
-	Class
-	No of Seats
-	Type
 
-TTE :- 
-	Name
-	ID
+station:
+	Platforms
+	train no
+	staton name(from - train)
+	station_code ( platform )
+	Train_name
 
-TC :-
-	Name
-	ID
+
+stops at :- 
+	station_no
+	train_no
+	train_name
+
 Platform :-
 	Plat No
-	Station Code
-	Train Route
+	Station_code
+	Train name
+	Train no
+
 	
 Admin :-
 	Name 

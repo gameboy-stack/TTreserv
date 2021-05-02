@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-import mysql.connector
+import mysql.connector 
 from tkinter import messagebox
 from tkinter import ttk
 
@@ -159,9 +159,7 @@ def tckt(): # Train Ticket Button Window
     trnavalbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
     tcktresbtn.place(relx=0.5, rely=0.7, anchor=S)
 
-db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")
-
-db.commit()
+db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbmsprj")db.commit()
 
 root = tk.Tk()
 root.resizable(False, False)
