@@ -43,6 +43,7 @@ passangers:
 Attributes 
 
 passanger:
+	pid(new)
 	Class
 	name 
 	gender
@@ -53,25 +54,25 @@ passanger:
 	age
 	Train name 
 	Phone_no
-	train_no (new ) - (train )
+
+	train_no (new ) - (train ) f
 
 Train :- 
 	From 
 	to
 	Date
 	Time
-	Train No  ( station )
+	Train No p
 	Train_Name
-	platform no ( platform ) 
+
 
 
 
 station:
 	Platforms
-	train no
-	staton name(from - train)
-	station_code ( platform )
-	Train_name
+	staton name(from - train) 
+	station_code 
+
 
 
 stops at :- 
@@ -79,11 +80,10 @@ stops at :-
 	train_no
 	train_name
 
-Platform :-
-	Plat No
-	Station_code
-	Train name
-	Train no
+phn_no:-
+	pid
+	phn_no1
+	phn_no2
 
 	
 Admin :-
