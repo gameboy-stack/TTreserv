@@ -15,14 +15,84 @@ def warmsg(msg):
 def infomsg(msg):
     messagebox.showinfo("Train Ticket Reservation",msg)
 
+
+def uptrn():
+    print("update - train")
+
+def intrn():
+    print("insert - train")
+
+def deltrn():
+    print("delete - train")
+
+def reftrn():
+    print("refresh - train")
+
+def trnadmn():
+    trnadmnwin = tk.Tk()
+    trnadmnwin.resizable(False,False)
+    trnadmnwin.title("Train Ticket Reservation - Admin")
+
+    upbtn = tk.Button(trnadmnwin,text="Update",command=uptrn,height=2,width=16)
+    inbtn =  tk.Button(trnadmnwin,text="Insert",command=intrn,height=2,width=16)
+    delbtn =  tk.Button(trnadmnwin,text="Delete",command=deltrn,height=2,width=16)
+    refbtn = tk.Button(trnadmnwin,text="Refresh",command=reftrn,height=2,width=16)
+
+    upbtn.grid(row=0,column=0,pady=5)
+    inbtn.grid(row=0,column=1,pady=5)
+    delbtn.grid(row=0,column=2,pady=5)
+    refbtn.grid(row=0,column=3,pady=5)
+
+    trnadtree = ttk.Treeview(trnadmnwin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show='headings')
+    trnadtree.column("c1", width=110,anchor='c')
+    trnadtree.heading("c1", text="From")
+
+    trnadtree.column("c2", width=110,anchor='se')
+    trnadtree.heading("c2", text="To")
+
+    trnadtree.column("c3", width=110,anchor='se')
+    trnadtree.heading("c3", text="Date")
+
+    trnadtree.column("c4",width=110, anchor='se')
+    trnadtree.heading("c4", text="Time")
+
+    trnadtree.column("c5",width=110, anchor='se')
+    trnadtree.heading("c5", text="Train_No")
+
+    trnadtree.column("c6",width=110, anchor='se')
+    trnadtree.heading("c6", text="Train_Name")
+
+    trnadtree.column("c7",width=110, anchor='se')
+    trnadtree.heading("c7", text="Pantry")
+
+    trnadtree.grid(row=1,column=0,columnspan=4,pady=3)
+
+    print("Train - admin view")
+
+def passadmn():
+    print("passengers - admin")
+
 def adminwin():
     adwin = tk.Tk()
-    adwin.geometry("360x300")
     adwin.resizable(False,False)
-    
-    viewtrnaval(adwin)
-
+    adwin.geometry("360x245")
     adwin.title("Train Ticket Reservation - Admin")
+
+
+    trnbtn = tk.Button(adwin,text="Train",command=trnadmn,height=3,width=16)
+    passbtn =  tk.Button(adwin,text="Passengers",command=passadmn,height=3,width=16)
+
+    trnbtn.grid(row=0,column=1)
+    passbtn.grid(row=1,column=2)
+
+    trnbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
+    passbtn.place(relx=0.5, rely=0.7, anchor=S)
+
+    #train
+    #passengers
+    
+
+
 
 def adlog(admn):
     
