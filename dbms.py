@@ -20,6 +20,8 @@ def adminwin():
     adwin.geometry("360x300")
     adwin.resizable(False,False)
     
+    viewtrnaval(adwin)
+
     adwin.title("Train Ticket Reservation - Admin")
 
 def adlog(admn):
@@ -66,7 +68,7 @@ def adminlogin():
     print("admin login")
 
 
-def View(tree):
+def viewtrnaval(tree):
 
     
     cursor = db.cursor()
@@ -108,7 +110,7 @@ def trnaval(): # Train Available
     tree.heading("c7", text="Pantry")
 
     tree.pack()
-    View(tree)
+    viewtrnaval(tree)
 
     print("Train Available")
 
