@@ -9,12 +9,38 @@ global db
 db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
 
 
-def notfilld(msg):
+def warmsg(msg):
     messagebox.showwarning("Train Ticket Reservation",msg)
 
-def tcktbookdmsg():
-    messagebox.showinfo("Train Ticket Reservation","Ticket Booked")
+def infomsg(msg):
+    messagebox.showinfo("Train Ticket Reservation",msg)
 
+def adminwin():
+    adwin = tk.Tk()
+    adwin.geometry("360x300")
+    adwin.resizable(False,False)
+    
+    adwin.title("Train Ticket Reservation - Admin")
+
+def adlog(admn):
+    
+    admn_nme = str(admn[0].get())
+    admn_id = str(admn[1].get())
+
+    if((admn_nme == "") or (admn_nme == " ")or(admn_id == "") or (admn_id == " ")):
+        warmsg("Please Fill The Fields")
+    
+    else:
+        cur = db.cursor()
+        cur.execute(""" select * from admin where name ='"""+ admn_nme +"""' and id ='"""+ admn_id +"""'""" )
+        flag = cur.fetchall()
+
+        if(flag):
+            adminwin()
+            print(" admin login success")
+
+        else:
+            warmsg("Please Enter Correct Username & Password  !!!")
 
 def adminlogin():
     adlogwin = tk.Tk()
@@ -31,7 +57,9 @@ def adminlogin():
     admin_id = Entry(adlogwin,width=37)
     admin_id.grid(row=1, column=1,padx=10,pady=20,ipady=2.21)
 
-    logbtn = Button(adlogwin,text = "Login", command= "#")
+    admn = [admin_nme,admin_id]
+
+    logbtn = Button(adlogwin,text = "Login", command= lambda:[adlog(admn)])
     logbtn.grid(row=2,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
 
 
@@ -100,11 +128,11 @@ def bktktf(arrval): # Book Ticket Function For Database
         print(arrval)
         for x in arrval:
             x.delete(0,END)
-        tcktbookdmsg()
+        infomsg("Ticket Booked")
         print("ticket booked")
         db.commit()
     else:
-        notfilld("Please Fill All The Fields !!!")
+        warmsg("Please Fill All The Fields !!!")
         print("ticket not booked")
 
 
