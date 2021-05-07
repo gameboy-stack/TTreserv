@@ -4,31 +4,52 @@ import mysql.connector
 from tkinter import messagebox
 from tkinter import ttk
 
+global db
 
-def notfilld():
-    messagebox.showwarning("Train Ticket Reservation","Please Fill All The Fields !!!")
+db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
+
+
+def notfilld(msg):
+    messagebox.showwarning("Train Ticket Reservation",msg)
 
 def tcktbookdmsg():
     messagebox.showinfo("Train Ticket Reservation","Ticket Booked")
 
 
 def adminlogin():
+    adlogwin = tk.Tk()
+    adlogwin.geometry("360x220")
+    adlogwin.title("Train Ticket Reservation - Train")
+
+    Admin_name = Label(adlogwin,text="Admin Name :")
+    Admin_name.grid(row=0, column=0,padx=10,pady=20)
+    admin_nme = Entry(adlogwin,width=37)
+    admin_nme.grid(row=0, column=1,padx=10,pady=20,ipady=2.2)
+    
+    Admin_id = Label(adlogwin,text="Admin ID :")
+    Admin_id.grid(row=1, column=0,padx=10,pady=20)
+    admin_id = Entry(adlogwin,width=37)
+    admin_id.grid(row=1, column=1,padx=10,pady=20,ipady=2.21)
+
+    logbtn = Button(adlogwin,text = "Login", command= "#")
+    logbtn.grid(row=2,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
+
+
     print("admin login")
 
 
 def View(tree):
 
-    db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
+    
     cursor = db.cursor()
     cursor.execute("""SELECT * FROM train""")
     rows = cursor.fetchall()
     for row in rows:
         tree.insert("", tk.END, values=row)
-    db.close()
 
 
 def trnaval(): # Train Available
-    db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
+    
     cursor = db.cursor()
 
 
@@ -61,15 +82,11 @@ def trnaval(): # Train Available
     tree.pack()
     View(tree)
 
-
-    db.commit()
-    db.close()
-
     print("Train Available")
 
 
 def bktktf(arrval): # Book Ticket Function For Database
-    db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
+    
     cursor = db.cursor()
     arr = [str(x.get()) for x in arrval]
     mi = min(arr)
@@ -86,9 +103,8 @@ def bktktf(arrval): # Book Ticket Function For Database
         tcktbookdmsg()
         print("ticket booked")
         db.commit()
-        db.close()
     else:
-        notfilld()
+        notfilld("Please Fill All The Fields !!!")
         print("ticket not booked")
 
 
@@ -100,6 +116,7 @@ def tcktres(): # Ticket Reservation
     Pidl = Label(scndwin,text="ID :").grid(row = 0,column=0,padx=5,pady=5)
     pid = Entry(scndwin,width=37)
     pid.grid(row = 0,column=1,padx=20,pady=5)
+    
 
     Namel = Label(scndwin,text="Name :").grid(row = 1,column=0,padx=5,pady=5)
     name = Entry(scndwin,width=37)
@@ -169,8 +186,8 @@ def tckt(): # Train Ticket Button Window
     trnavalbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
     tcktresbtn.place(relx=0.5, rely=0.7, anchor=S)
 
-db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
-db.commit()
+
+
 
 root = tk.Tk()
 root.resizable(False, False)
@@ -181,12 +198,15 @@ root.geometry("300x245")
 adminbtn = tk.Button(root,text="Admin Login",command=adminlogin,height=3,width=16)
 tktresbtn =  tk.Button(root,text="Passengers",command=tckt,height=3,width=16)
 
+db.commit()
+
 adminbtn.grid(row=0,column=1)
 tktresbtn.grid(row=1,column=2)
 
 adminbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
 tktresbtn.place(relx=0.5, rely=0.7, anchor=S)
 
-db.close()
 
 mainloop()
+
+db.close()
