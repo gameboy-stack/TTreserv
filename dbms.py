@@ -9,39 +9,112 @@ global db
 db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
 
 
-def warmsg(msg):
-    messagebox.showwarning("Train Ticket Reservation",msg)
+def warmsg(msg1,msg2):
+    messagebox.showwarning(msg1,msg2)
 
-def infomsg(msg):
-    messagebox.showinfo("Train Ticket Reservation",msg)
+def infomsg(msg1,msg2):
+    messagebox.showinfo(msg1,msg2)
 
 
-def uptrn():
-    print("update - train")
+def inuptrnque(fn,arrval):
 
-def intrn():
-    print("insert - train")
+    cursor = db.cursor()
+    arr = [x.get() for x in arrval]
+    mi = min(arr)
+    
+    #insert into train(frm,to_,dte,tme,trn_no,trn_nme,pantry) values("chennai egmore","Hnizamuddin","5/05/21","9:05","06011","NZM EXP","yes");
+
+    #frm,to_,dte,tme,trn_nme,pnt,trn_no
+
+    #update train set frm =%s ,to_ =%s ,dte =%s ,tme =%s ,trn_nme =%s ,pantry =%s where trn_no =%s 
+
+    if ((mi!="") and (mi!=" ")):
+
+        if(fn=="Insert"):
+
+            cursor.execute("""insert into train(frm,to_,dte,tme,trn_nme,pantry,trn_no) values (%s,%s,%s,%s,%s,%s,%s)""",arr)
+
+            print(arrval)
+            for x in arrval:
+                x.delete(0,END)
+            txtm = "Train " + fn +"ed" 
+            infomsg("Train Ticket Reservation - Admin",txtm)
+            print(fn + " - train - query")
+            db.commit()
+
+        else:
+            cursor.execute("""update train set frm =%s ,to_ =%s ,dte =%s ,tme =%s ,trn_nme =%s ,pantry =%s where trn_no =%s""",arr)
+
+            print(arrval)
+            for x in arrval:
+                x.delete(0,END)
+            txtm = "Train " + fn +"ed" 
+            infomsg("Train Ticket Reservation - Admin",txtm)
+            print(fn + " - train - query")
+            db.commit()
+    else:
+        warmsg("Train Ticket Reservation - Admin","Please Fill All The Fields !!!")
+
+        print(fn + " - train - query")
+
+
 
 def deltrn():
     print("delete - train")
 
-def reftrn():
-    print("refresh - train")
+
+def passadmn():
+    print("passengers - admin")
+
+
+def inuptrn(fn):
+
+    inupwin = tk.Tk()
+    inupwin.resizable(False,False)
+    inupwin.title("Train Ticket Reservation - Admin")
+
+    Froml = Label(inupwin,text="From :").grid(row = 0,column=0,padx=5,pady=5)
+    frm = Entry(inupwin,width=37)
+    frm.grid(row = 0,column=1,padx=20,pady=5)
+    
+
+    Tol = Label(inupwin,text="To :").grid(row = 1,column=0,padx=5,pady=5)
+    to_ = Entry(inupwin,width=37)
+    to_.grid(row = 1,column=1,padx=20,pady=5)
+
+    Datel = Label(inupwin,text="Date :").grid(row = 2,column=0,padx=5,pady=5)
+    dte = Entry(inupwin,width=37)
+    dte.grid(row = 2,column=1,padx=20,pady=5)
+
+    Timel = Label(inupwin,text="Time :").grid(row = 3,column=0,padx=5,pady=5)
+    tme = Entry(inupwin,width=37)
+    tme.grid(row = 3,column=1,padx=5,pady=5)
+
+    Train_nol = Label(inupwin,text="Train no :").grid(row = 4,column=0,padx=5,pady=5)
+    trn_no = Entry(inupwin,width=37)
+    trn_no.grid(row = 4,column=1,padx=5,pady=5)
+
+    Train_namel = Label(inupwin,text="Train Name :").grid(row = 5,column=0,padx=5,pady=5)
+    trn_nme = Entry(inupwin,width=37)
+    trn_nme.grid(row = 5,column=1,padx=5,pady=5)
+
+    Pantryl = Label(inupwin,text="Pantry :").grid(row = 6,column=0,padx=5,pady=5)
+    pnt = Entry(inupwin,width=37)
+    pnt.grid(row = 6,column=1,padx=20,pady=5)
+
+    arr = [frm,to_,dte,tme,trn_nme,pnt,trn_no]
+
+    txt = fn + " " + "Train"
+    submitbtn = tk.Button(inupwin,text=txt, command=lambda:[inuptrnque(fn,arr)])#,tcktbookdmsg()
+    submitbtn.grid(row=12,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
+
+    print(fn + " - train - query")
+
 
 def trnadmn():
     trnadmnwin = tk.Tk()
     trnadmnwin.resizable(False,False)
     trnadmnwin.title("Train Ticket Reservation - Admin")
-
-    upbtn = tk.Button(trnadmnwin,text="Update",command=uptrn,height=2,width=16)
-    inbtn =  tk.Button(trnadmnwin,text="Insert",command=intrn,height=2,width=16)
-    delbtn =  tk.Button(trnadmnwin,text="Delete",command=deltrn,height=2,width=16)
-    refbtn = tk.Button(trnadmnwin,text="Refresh",command=reftrn,height=2,width=16)
-
-    upbtn.grid(row=0,column=0,pady=5)
-    inbtn.grid(row=0,column=1,pady=5)
-    delbtn.grid(row=0,column=2,pady=5)
-    refbtn.grid(row=0,column=3,pady=5)
 
     trnadtree = ttk.Treeview(trnadmnwin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show='headings')
     trnadtree.column("c1", width=110,anchor='c')
@@ -67,10 +140,18 @@ def trnadmn():
 
     trnadtree.grid(row=1,column=0,columnspan=4,pady=3)
 
+    upbtn = tk.Button(trnadmnwin,text="Update",command=lambda:[inuptrn("Update")],height=2,width=16)
+    inbtn =  tk.Button(trnadmnwin,text="Insert",command=lambda:[inuptrn("Insert")],height=2,width=16)
+    delbtn =  tk.Button(trnadmnwin,text="Delete",command=deltrn,height=2,width=16)
+    refbtn = tk.Button(trnadmnwin,text="Refresh",command=lambda:[viewtrnaval(trnadtree)],height=2,width=16)
+    
+    upbtn.grid(row=0,column=0,pady=5)
+    inbtn.grid(row=0,column=1,pady=5)
+    delbtn.grid(row=0,column=2,pady=5)
+    refbtn.grid(row=0,column=3,pady=5)
+
     print("Train - admin view")
 
-def passadmn():
-    print("passengers - admin")
 
 def adminwin():
     adwin = tk.Tk()
@@ -100,7 +181,7 @@ def adlog(admn):
     admn_id = str(admn[1].get())
 
     if((admn_nme == "") or (admn_nme == " ")or(admn_id == "") or (admn_id == " ")):
-        warmsg("Please Fill The Fields")
+        warmsg("Train Ticket Reservation","Please Fill The Fields")
     
     else:
         cur = db.cursor()
@@ -112,7 +193,7 @@ def adlog(admn):
             print(" admin login success")
 
         else:
-            warmsg("Please Enter Correct Username & Password  !!!")
+            warmsg("Train Ticket Reservation","Please Enter Correct Username & Password  !!!")
 
 def adminlogin():
     adlogwin = tk.Tk()
@@ -139,13 +220,16 @@ def adminlogin():
 
 
 def viewtrnaval(tree):
-
-    
     cursor = db.cursor()
     cursor.execute("""SELECT * FROM train""")
     rows = cursor.fetchall()
+
+    for i in tree.get_children():
+        i.delete(i)
+
     for row in rows:
         tree.insert("", tk.END, values=row)
+    print("aval train")
 
 
 def trnaval(): # Train Available
@@ -191,20 +275,19 @@ def bktktf(arrval): # Book Ticket Function For Database
     arr = [str(x.get()) for x in arrval]
     mi = min(arr)
     
-    #insert into train(frm,to_,dte,tme,trn_no,trn_nme,pantry) values("chennai egmore","Hnizamuddin","5/05/21","9:05","06011","NZM EXP","yes");
 
     if ((mi!="") and (mi!=" ")):
 
-        cursor.execute("""INSERT INTO passengers(name,age,gender,phn_no,trn_nme,cls,frm,to_,dte,tme,trn_no,pid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr);
+        cursor.execute("""insert into passengers(name,age,gender,phn_no,trn_nme,cls,frm,to_,dte,tme,trn_no,pid) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr)
 
         print(arrval)
         for x in arrval:
             x.delete(0,END)
-        infomsg("Ticket Booked")
+        infomsg("Train Ticket Reservation","Ticket Booked")
         print("ticket booked")
         db.commit()
     else:
-        warmsg("Please Fill All The Fields !!!")
+        warmsg("Train Ticket Reservation","Please Fill All The Fields !!!")
         print("ticket not booked")
 
 
