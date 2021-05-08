@@ -272,7 +272,7 @@ def trnaval(): # Train Available
 def bktktf(arrval): # Book Ticket Function For Database
     
     cursor = db.cursor()
-    arr = [str(x.get()) for x in arrval]
+    arr = [x.get() for x in arrval]
     mi = min(arr)
     
 
