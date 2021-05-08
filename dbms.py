@@ -19,7 +19,7 @@ def infomsg(msg1,msg2):
 def inuptrnque(fn,arrval):
 
     cursor = db.cursor()
-    arr = [x.get() for x in arrval]
+    arr = [str(x.get()) for x in arrval]
     mi = min(arr)
     
     #insert into train(frm,to_,dte,tme,trn_no,trn_nme,pantry) values("chennai egmore","Hnizamuddin","5/05/21","9:05","06011","NZM EXP","yes");
@@ -43,23 +43,71 @@ def inuptrnque(fn,arrval):
             db.commit()
 
         else:
-            cursor.execute("""update train set frm =%s ,to_ =%s ,dte =%s ,tme =%s ,trn_nme =%s ,pantry =%s where trn_no =%s""",arr)
+            cursor.execute(""" select * from train where trn_no ='"""+arr[-1]+"""'""")
+            flag = cursor.fetchall()
+            if(flag):
+                cursor.execute("""update train set frm =%s ,to_ =%s ,dte =%s ,tme =%s ,trn_nme =%s ,pantry =%s where trn_no =%s""",arr)
 
-            print(arrval)
-            for x in arrval:
-                x.delete(0,END)
-            txtm = "Train " + fn +"ed" 
-            infomsg("Train Ticket Reservation - Admin",txtm)
-            print(fn + " - train - query")
-            db.commit()
+                print(arrval)
+                for x in arrval:
+                    x.delete(0,END)
+                txtm = "Train " + fn +"ed" 
+                infomsg("Train Ticket Reservation - Admin",txtm)
+                print(fn + " - train - query")
+                db.commit()
+            else:
+                warmsg("Train Ticket Reservetion - Admin","Invalid Train Number")
+                print(fn + " - train - query - warning - inv tn")
     else:
         warmsg("Train Ticket Reservation - Admin","Please Fill All The Fields !!!")
 
         print(fn + " - train - query")
 
+def deltrnque(arrval):
+
+    cursor = db.cursor()
+    arr = [str(x.get()) for x in arrval]
+    mi = min(arr)
+
+    if ((mi!="") and (mi!=" ")):
+
+        cursor.execute(""" select * from train where trn_no ='"""+arr[0]+"""'""")
+        flag = cursor.fetchall()
+
+        if(flag):
+            cursor.execute("""delete from train where trn_no =%s""",arr)
+
+            for x in arrval:
+                x.delete(0,END)
+
+            infomsg("Train Ticket Reservation - Admin","Train Deleted")
+
+            print("Deleted - train - query")
+            db.commit()
+        else:
+            warmsg("Train Ticket Reservetion - Admin","Invalid Train Number")
+            print("Delete - train - query - warning - inv tn")
+    else:
+        warmsg("Train Ticket Reservation - Admin","Please Enter Train No")
+
+        print("Delete - train - query")
 
 
 def deltrn():
+    delwin = tk.Tk()
+    delwin.resizable(False,False)
+    delwin.title("Train Ticket Reservation - Admin")
+
+    trnnol = Label(delwin,text="Train no :").grid(row = 0,column=0,padx=5,pady=5)
+    trnno = Entry(delwin,width=37)
+    trnno.grid(row = 0,column=1,padx=20,pady=5)
+
+    arr = [trnno]
+
+    submitbtn = tk.Button(delwin,text="Delete Train", command=lambda:[deltrnque(arr)])#,tcktbookdmsg()
+    submitbtn.grid(row=12,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
+    
+
     print("delete - train")
 
 
@@ -225,7 +273,7 @@ def viewtrnaval(tree):
     rows = cursor.fetchall()
 
     for i in tree.get_children():
-        i.delete(i)
+        tree.delete(i)
 
     for row in rows:
         tree.insert("", tk.END, values=row)
@@ -272,7 +320,7 @@ def trnaval(): # Train Available
 def bktktf(arrval): # Book Ticket Function For Database
     
     cursor = db.cursor()
-    arr = [x.get() for x in arrval]
+    arr = [str(x.get()) for x in arrval]
     mi = min(arr)
     
 
