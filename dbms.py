@@ -276,9 +276,6 @@ def adminwin():
     #train
     #passengers
     
-
-
-
 def adlog(admn):
     
     admn_nme = str(admn[0].get())
