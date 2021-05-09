@@ -1,9 +1,8 @@
-import tkinter as tk
 from tkinter import *
-import mysql.connector 
 from tkinter import messagebox
 from tkinter import ttk
-
+import tkinter as tk
+import mysql.connector 
 global db
 
 db = mysql.connector.connect(host ="localhost", user = "root", password = "pass", db ="traindbms")
@@ -110,8 +109,65 @@ def deltrn():
 
     print("delete - train")
 
+def passadmntab(tree):
+
+    cursor = db.cursor()
+    cursor.execute("""select * from passengers""")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        tree.insert("", tk.END, values=row)  
+
+    print("passengers - admin - view")
+
 
 def passadmn():
+
+    passadwin = tk.Tk()
+    passadwin.resizable(False,False)
+    passadwin.title("Train Ticket Reservation")
+    
+    tree = ttk.Treeview(passadwin, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12"), show='headings')
+    tree.column("c1", width=110,anchor='c')
+    tree.heading("c1", text="Name")
+
+    tree.column("c2", width=110,anchor='se')
+    tree.heading("c2", text="Age")
+
+    tree.column("c3", width=110,anchor='se')
+    tree.heading("c3", text="Gender")
+
+    tree.column("c4",width=110, anchor='se')
+    tree.heading("c4", text="Phone Number")
+
+    tree.column("c5",width=110, anchor='se')
+    tree.heading("c5", text="Train Name")
+
+    tree.column("c6",width=110, anchor='se')
+    tree.heading("c6", text="Class")
+
+    tree.column("c7",width=110, anchor='se')
+    tree.heading("c7", text="From")
+
+    tree.column("c8",width=110, anchor='se')
+    tree.heading("c8", text="To")
+    
+    tree.column("c9",width=110, anchor='se')
+    tree.heading("c9", text="Date")
+
+    tree.column("c10",width=110, anchor='se')
+    tree.heading("c10", text="Time")
+
+    tree.column("c11",width=110, anchor='se')
+    tree.heading("c11", text="Train Number")
+
+    tree.column("c12",width=110, anchor='se')
+    tree.heading("c12", text="Passenger ID")
+
+    tree.pack()
+
+    passadmntab(tree)
+
     print("passengers - admin")
 
 
@@ -269,7 +325,7 @@ def adminlogin():
 
 def viewtrnaval(tree):
     cursor = db.cursor()
-    cursor.execute("""SELECT * FROM train""")
+    cursor.execute("""select * from train""")
     rows = cursor.fetchall()
 
     for i in tree.get_children():
@@ -282,9 +338,6 @@ def viewtrnaval(tree):
 
 def trnaval(): # Train Available
     
-    cursor = db.cursor()
-
-
     trnavalwin = tk.Tk()
     trnavalwin.resizable(False,False)
     trnavalwin.title("Train Ticket Reservation")
