@@ -20,18 +20,25 @@ def bktktf(arrval): # Book Ticket Function For Database
     cursor = db.cursor()
     arr = [str(x.get()) for x in arrval]
     mi = min(arr)
-    
 
     if ((mi!="") and (mi!=" ")):
+            cursor.execute(""" select * from train where trn_no ='"""+arr[-1]+"""'""")
+            flag = cursor.fetchall()
 
-        cursor.execute("""insert into passengers(name,age,gender,phn_no,trn_nme,cls,frm,to_,dte,tme,trn_no,pid) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr)
+            if(flag):
 
-        print(arrval)
-        for x in arrval:
-            x.delete(0,END)
-        infomsg("Train Ticket Reservation","Ticket Booked")
-        print("ticket booked")
-        db.commit()
+                cursor.execute("""insert into passengers(name,age,gender,phn_no,trn_nme,cls,frm,to_,dte,tme,pid,trn_no) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",arr)
+                
+                print(arrval)
+                for x in arrval:
+                    x.delete(0,END)
+                infomsg("Train Ticket Reservation","Ticket Booked")
+                print("ticket booked")
+                db.commit()
+
+            else:
+                warmsg("Train Ticket Reservetion - Admin","Invalid Train Number")
+
     else:
         warmsg("Train Ticket Reservation","Please Fill All The Fields !!!")
         print("ticket not booked")
@@ -403,7 +410,7 @@ def tcktres():
     time_ = Entry(scndwin,width=37)
     time_.grid(row = 11,column=1,padx=5,pady=5)
 
-    arr = [name,age,gender,phn_no,trn_nme,cls_,frm,to_,date,time_,trn_no,pid]
+    arr = [name,age,gender,phn_no,trn_nme,cls_,frm,to_,date,time_,pid,trn_no]
 
 
     submitbtn = tk.Button(scndwin,text="Book Ticket", command=lambda:[bktktf(arr)])#,tcktbookdmsg()
