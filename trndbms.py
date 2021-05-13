@@ -121,6 +121,36 @@ def deltrnque(arrval):
         print("Delete - train - query")
 
 
+def cncltcktq(arrval):
+
+    cursor = db.cursor()
+    arr = [str(x.get()) for x in arrval]
+    mi = min(arr)
+
+    if ((mi!="") and (mi!=" ")):
+
+        cursor.execute(""" select * from passengers where pid ='"""+ arr[0] + """"' and trn_no ='"""+ arr[1] +"""'""")
+        flag = cursor.fetchall()
+
+        if(flag):
+            cursor.execute("""delete from passengers where pid =%s""",arr[0])
+
+            for x in arrval:
+                x.delete(0,END)
+
+            infomsg("Train Ticket Reservation","Train Ticket Cancelled")
+
+            print("Deleted - train - ticket - query")
+            db.commit()
+        else:
+            warmsg("Train Ticket Reservetion - Admin","Invalid Passenger ID (or) Train Number")
+            print("Delete - train - query - warning - inv tn")
+    else:
+        warmsg("Train Ticket Reservation","Please Fill The Fields")
+
+        print("Delete - train - Ticket - query")
+
+
 def passadmntab(tree):
 
     cursor = db.cursor()
@@ -354,6 +384,33 @@ def inuptrn(fn):
     print(fn + " - train - query")
 
 
+def tcktcncl():
+
+    tcwin = tk.Tk()
+    tcwin.geometry("360x220")
+    tcwin.title("Train Ticket Reservation - Train")
+
+    P_id = Label(tcwin,text="Passenger ID :")
+    P_id.grid(row=0, column=0,padx=10,pady=20)
+    pid = Entry(tcwin,width=37)
+    pid.grid(row=0, column=1,padx=10,pady=20,ipady=2.2)
+    
+    Train_no = Label(tcwin,text="Train No :")
+    Train_no.grid(row=1, column=0,padx=10,pady=20)
+    trn_no = Entry(tcwin,width=37)
+    trn_no.grid(row=1, column=1,padx=10,pady=20,ipady=2.21)
+
+    tc = [pid,trn_no]
+
+    cnclbtn = Button(tcwin,text = "Cancel Ticket", command= lambda:[cncltcktq(tc)])
+    cnclbtn.grid(row=2,column=0,columnspan=2,padx=10,pady=10,ipadx=100)
+
+
+
+
+    print("cncl")
+
+
  # Ticket Reservation
 
 def tcktres():
@@ -470,12 +527,16 @@ def tckt():
 
     trnavalbtn = tk.Button(tcktwin,text="Train Available",command=trnaval,height=3,width=16)
     tcktresbtn =  tk.Button(tcktwin,text="Ticket Reservation",command=tcktres,height=3,width=16)
+    tcktcnclbtn =  tk.Button(tcktwin,text="Ticket Cancelation",command=tcktcncl,height=3,width=16)
+
 
     trnavalbtn.grid(row=0,column=1)
-    tcktresbtn.grid(row=1,column=2)
+    tcktresbtn.grid(row=1,column=1)
+    tcktcnclbtn.grid(row=2,column=1)
 
-    trnavalbtn.place(relx=0.5, rely=0.25, anchor=CENTER)
-    tcktresbtn.place(relx=0.5, rely=0.7, anchor=S)
+    trnavalbtn.place(relx=0.5, rely=0.05, anchor=N)
+    tcktresbtn.place(relx=0.5, rely=0.37, anchor=N)
+    tcktcnclbtn.place(relx=0.5, rely=0.70, anchor=N)
 
 
 root = tk.Tk()
