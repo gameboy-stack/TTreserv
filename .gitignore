@@ -1,8 +1,7 @@
 .idea/*
 venv/*
 prac.py
-safty.txt
-just.txt
+*.txt
 try.py
 ERdbsFinalold.pdf
 .vscode/
