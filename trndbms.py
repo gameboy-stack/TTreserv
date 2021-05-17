@@ -181,7 +181,7 @@ def adlog(admn):
             print(" admin login success")
 
         else:
-            warmsg("Train Ticket Reservation","Please Enter Correct Username & Password  !!!")
+            warmsg("Train Ticket Reservation","Please Enter Correct Admin Name & Admin ID  !!!")
 
 
 def viewtrnaval(tree):
@@ -478,6 +478,7 @@ def tcktres():
 
 def adminlogin():
     adlogwin = tk.Tk()
+    adlogwin.resizable(False,False)
     adlogwin.geometry("360x220")
     adlogwin.title("Train Ticket Reservation - Train")
 
