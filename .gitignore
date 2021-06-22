@@ -1,8 +1,4 @@
 .idea/*
 venv/*
-prac.py
-*.txt
-try.py
-ERdbmsFinalold.pdf
 .vscode/
-*.drawio
+others/
